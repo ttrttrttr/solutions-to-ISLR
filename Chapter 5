@@ -1,0 +1,55 @@
+#ch5 exersice2
+#g
+library(ggplot2)
+eq = function(n){1-(1-1/n)^n}
+ggplot(data.frame(x=c(1, 100000)), aes(x=x)) + stat_function(fun=eq, geom="line") + xlab("n") + ylab("prob")
+#h
+store = rep(NA,10000)
+for(i in 1:10000){
+  store[i]=sum(sample(1:100,replace = T)==4)>0
+}
+mean(store)
+
+#ch5 exersice8
+#a
+set.seed(1)
+x=rnorm(100)
+y=x-2*x^2+rnorm(100)
+#b
+plot(x,y)
+#c
+df <- data.frame(y, x, x2=x^2, x3=x^3, x4=x^4)
+set.seed(666)
+fit1 <- glm(y ~ x, data=df)
+cv.err1 <- cv.glm(df, fit1)
+cv.err1$delta[1]
+fit2 <- glm(y ~ x + x2, data=df)
+cv.err2 <- cv.glm(df, fit2)
+cv.err2$delta[1]
+fit3 <- glm(y ~ x + x2 + x3, data=df)
+cv.err3 <- cv.glm(df, fit3)
+cv.err3$delta[1]
+fit4 <- glm(y ~ x + x2 + x3 + x4, data=df)
+cv.err4 <- cv.glm(df, fit4)
+cv.err4$delta[1]
+#d
+df <- data.frame(y, x)
+set.seed(111)
+fit1 <- glm(y ~ x, data=df)
+cv.err1 <- cv.glm(df, fit1)
+cv.err1$delta[1]
+fit2 <- glm(y ~ poly(x,2), data=df)
+cv.err2 <- cv.glm(df, fit2)
+cv.err2$delta[1]
+fit3 <- glm(y ~ poly(x,3), data=df)
+cv.err3 <- cv.glm(df, fit3)
+cv.err3$delta[1]
+fit4 <- glm(y ~ poly(x,4), data=df)
+cv.err4 <- cv.glm(df, fit4)
+cv.err4$delta[1]
+#f
+summary(fit1)
+summary(fit2)
+summary(fit3)
+summary(fit4)
+
